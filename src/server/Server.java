@@ -7,11 +7,11 @@ import java.net.Socket;
 public class Server {
 
 	private static Dictionary dictionary;
+
 	public static void main(String[] args) {
 
 
-		dictionary = new Dictionary(args[1]);
-
+		dictionary = new Dictionary();
 
 		try {
 			// ServerSocket ss = new ServerSocket(Integer.parseInt(args[0]));

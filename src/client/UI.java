@@ -25,7 +25,7 @@ public class UI extends Thread {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UI window = new UI();
+					UI window = new UI(client);
 					window.frmDictionary.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,9 +90,9 @@ public class UI extends Thread {
 				msg.put("action", "Query");
 				msg.put("word", word.getText());
 
-//				JSONObject result = client.send(action);
-//				display.setText(forceString(result.get("err")));
-				display.setText("Query successful");
+				JSONObject reply = client.send(msg);
+				display.setText((String) reply.get("error"));
+				display.setText((String) reply.get("meaning"));
 
 
 			}

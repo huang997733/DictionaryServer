@@ -2,6 +2,8 @@ package server;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.simple.JSONObject;
@@ -20,21 +22,31 @@ public class ConnectionThread extends Thread {
             DataInputStream reader = new DataInputStream(clientSocket.getInputStream());
             DataOutputStream writer = new DataOutputStream(clientSocket.getOutputStream());
             while (true) {
+
                 String in = reader.readUTF();
+
+
 
                 JSONObject request = new JSONObject();
                 JSONParser parser = new JSONParser();
                 try {
                     request = (JSONObject) parser.parse(in);
-                } catch (ParseException e) {
-                    System.out.println("PARSE EXCEPTION");
+                } catch (Exception e) {
+                    System.out.println("EXCEPTION");
                 }
-
                 JSONObject reply = new JSONObject();
 
                 switch ((String) request.get("action")) {
                     case "Query" :
-                        System.out.println("Query");
+                        String meaning = dictionary.query((String) request.get("word"));
+                        if (meaning != null) {
+                            reply.put("meaning", meaning);
+                        } else {
+                            reply.put("error", "Word not found");
+                        }
+
+
+
 
                         break;
                     case "Add" :
@@ -51,12 +63,9 @@ public class ConnectionThread extends Thread {
                         break;
 
                 }
-
+                writer.writeUTF(reply.toString());
+                writer.flush();
             }
-
-
-
-
 
         } catch (IOException e) {
             e.printStackTrace();
