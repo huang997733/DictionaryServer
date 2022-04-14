@@ -11,7 +11,7 @@ public class Server {
 	public static void main(String[] args) {
 
 
-		dictionary = new Dictionary();
+		dictionary = new Dictionary("dictionary.txt");
 
 		try {
 			// ServerSocket ss = new ServerSocket(Integer.parseInt(args[0]));

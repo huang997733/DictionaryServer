@@ -91,24 +91,44 @@ public class UI extends Thread {
 				msg.put("word", word.getText());
 
 				JSONObject reply = client.send(msg);
-				display.setText((String) reply.get("error"));
-				display.setText((String) reply.get("meaning"));
+				if (reply.get("error") != null) {
+					display.setText((String) reply.get("error"));
+				} else {
+					display.setText((String) reply.get("meaning"));
+				}
+
+
 
 
 			}
 		});
 		query.setBounds(10, 45, 93, 23);
 		frmDictionary.getContentPane().add(query);
-		
+
+
+
 		JButton add = new JButton("ADD");
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				display.setText("add success");
+
+				JSONObject msg = new JSONObject();
+				msg.put("action", "Add");
+				msg.put("word", word.getText());
+				msg.put("meaning", meaning.getText());
+
+				JSONObject reply = client.send(msg);
+				if (reply.get("error") != null) {
+					display.setText((String) reply.get("error"));
+				} else {
+					display.setText((String) reply.get("msg"));
+				}
 			}
 		});
 		add.setBounds(113, 45, 93, 23);
 		frmDictionary.getContentPane().add(add);
-		
+
+
+
 		JButton remove = new JButton("REMOVE");
 		remove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
