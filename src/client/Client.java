@@ -6,9 +6,17 @@ import java.net.UnknownHostException;
 
 public class Client {
 
+	private String address;
+	private int port;
+	private UI ui;
+
 	public static void main(String[] args) {
-		UI ui = new UI();
-		ui.start();
+
+
+		Client client = new Client(args[0], Integer.parseInt(args[1]));
+		client.startUI();
+
+
 		try {
 			// Socket s = new Socket(args[0], Integer.parseInt(args[1]));
 			Socket s = new Socket("localhost", 1234);
@@ -24,8 +32,16 @@ public class Client {
 		} catch (IOException e) {
 			System.out.println("Error: IO EXCEPTION");
 		}
-		
-		
-		
+	}
+
+	public Client(String address, int port) {
+		this.address = address;
+		this.port = port;
+
+	}
+
+	public void startUI() {
+		this.ui = new UI(this);
+		ui.start();
 	}
 }

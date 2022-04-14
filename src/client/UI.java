@@ -1,5 +1,7 @@
 package client;
 
+import org.json.simple.JSONObject;
+
 import java.awt.*;
 
 import javax.swing.JFrame;
@@ -17,6 +19,7 @@ public class UI extends Thread {
 	private JTextField title;
 	private JTextField word;
 	private JTextField meaning;
+	private Client client;
 
 	public void run() {
 		EventQueue.invokeLater(new Runnable() {
@@ -34,7 +37,8 @@ public class UI extends Thread {
 	/**
 	 * Create the application.
 	 */
-	public UI() {
+	public UI(Client client) {
+		this.client = client;
 		initialize();
 	}
 
@@ -81,12 +85,16 @@ public class UI extends Thread {
 		JButton query = new JButton("QUERY");
 		query.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String w = word.getText();
-				if (w == null) {
-					display.setText("Please enter a word");
-				}
-//				String meanings = dictionary.query(w);
-				display.setText(w);
+
+				JSONObject msg = new JSONObject();
+				msg.put("action", "Query");
+				msg.put("word", word.getText());
+
+//				JSONObject result = client.send(action);
+//				display.setText(forceString(result.get("err")));
+				display.setText("Query successful");
+
+
 			}
 		});
 		query.setBounds(10, 45, 93, 23);
