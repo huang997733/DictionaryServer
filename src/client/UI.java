@@ -79,54 +79,41 @@ public class UI extends Thread {
 
 
 		JButton query = new JButton("QUERY");
-		query.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		query.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				String w = word.getText();
 				if (w == null) {
 					display.setText("Please enter a word");
 				}
 //				String meanings = dictionary.query(w);
 				display.setText(w);
-
 			}
 		});
-
 		query.setBounds(10, 45, 93, 23);
 		frmDictionary.getContentPane().add(query);
 		
 		JButton add = new JButton("ADD");
-		add.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		add.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				display.setText("add success");
-
 			}
 		});
 		add.setBounds(113, 45, 93, 23);
 		frmDictionary.getContentPane().add(add);
 		
 		JButton remove = new JButton("REMOVE");
-		remove.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		remove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				display.setText("remove success");
-				
-				
-				
 			}
 		});
 		remove.setBounds(228, 45, 93, 23);
 		frmDictionary.getContentPane().add(remove);
 		
 		JButton update = new JButton("UPDATE");
-		update.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
+		update.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				display.setText("update success");
-				
-				
 			}
 		});
 		update.setBounds(331, 45, 93, 23);
