@@ -1,11 +1,9 @@
 package client;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import java.awt.Font;
-import java.awt.SystemColor;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -53,9 +51,10 @@ public class UI extends Thread {
 		
 		title = new JTextField();
 		title.setBorder(null);
-		title.setBackground(SystemColor.menu);
+		title.setBackground(new Color(240,240,240));
 		title.setFont(new Font("Arial Black", Font.PLAIN, 15));
 		title.setText("This is a dictionary");
+		title.setEditable(false);
 		title.setBounds(130, -1, 171, 36);
 		frmDictionary.getContentPane().add(title);
 		title.setColumns(10);
