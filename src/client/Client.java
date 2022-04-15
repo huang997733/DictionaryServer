@@ -11,14 +11,32 @@ import java.net.UnknownHostException;
 public class Client {
 
 	private String address;
-	private int port;
+	private static int port;
 	private UI ui;
 	private Socket s;
 	private DataOutputStream writer;
 	private DataInputStream reader;
 
 	public static void main(String[] args) {
-		Client client = new Client("localhost", 1234);
+
+		if (args.length != 2) {
+			System.out.println("Please enter: <address> <port>");
+			return;
+		}
+
+		try {
+			port = Integer.parseInt(args[1]);
+			if (port < 1024 || port > 49151) {
+				System.out.println("Invalid port: please use port between 1024 and 49151");
+				return;
+			}
+		} catch (Exception e) {
+			System.out.println("Port format incorrect");
+			return;
+		}
+
+
+		Client client = new Client(args[0], port);
 		client.startUI();
 
 	}
@@ -31,14 +49,15 @@ public class Client {
 
 	public void connect(){
 		try {
-			// Socket s = new Socket(args[0], Integer.parseInt(args[1]));
-			s = new Socket("localhost", 1234);
+			s = new Socket(this.address, this.port);
 			reader = new DataInputStream(s.getInputStream());
 			writer = new DataOutputStream(s.getOutputStream());
 		} catch (UnknownHostException e) {
 			System.out.println("Error: UNKNOWN HOST");
+			System.exit(-1);
 		} catch (IOException e) {
 			System.out.println("Error: IO EXCEPTION");
+			System.exit(-1);
 		}
 	}
 

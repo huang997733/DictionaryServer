@@ -26,8 +26,7 @@ public class ConnectionThread extends Thread {
 
                 String in = reader.readUTF();
 
-
-
+                
                 JSONObject request = new JSONObject();
                 JSONParser parser = new JSONParser();
                 try {
@@ -36,13 +35,15 @@ public class ConnectionThread extends Thread {
                     System.out.println("EXCEPTION");
                 }
                 JSONObject reply = new JSONObject();
-
+                String word;
+                String meaning;
                 switch ((String) request.get("action")) {
                     case "Query" :
-                        String meaning = dictionary.query((String) request.get("word"));
+                        word = (String) request.get("word");
+                        meaning = dictionary.query((String) request.get("word"));
                         if (meaning != null) {
                             reply.put("meaning", meaning);
-                        } else if (request.get("word") == null){
+                        } else if (word.equals("")){
                             reply.put("error", "Please enter a word");
                         } else {
                             reply.put("error", "Word not found");
@@ -50,7 +51,7 @@ public class ConnectionThread extends Thread {
 
                         break;
                     case "Add" :
-                        String word = (String) request.get("word");
+                        word = (String) request.get("word");
                         meaning =  (String) request.get("meaning");
                         if (word.equals("") && meaning.equals("")) {
                             reply.put("error", "Please enter a word and its definition");
@@ -67,12 +68,24 @@ public class ConnectionThread extends Thread {
 
                         break;
                     case "Remove" :
-                        System.out.println("Remove");
+                        word = (String) request.get("word");
+                        boolean removeSuccess = dictionary.remove(word);
+                        if (removeSuccess) {
+                            reply.put("msg", "Remove success");
+                        } else {
+                            reply.put("error", "Remove fail: word not found");
+                        }
 
                         break;
                     case "Update" :
-                        System.out.println("Update");
-
+                        word = (String) request.get("word");
+                        meaning =  (String) request.get("meaning");
+                        boolean updateSuccess = dictionary.update(word, meaning);
+                        if (updateSuccess) {
+                            reply.put("msg", "Update success");
+                        } else {
+                            reply.put("error", "Update fail: word does not exist");
+                        }
                         break;
 
                 }
@@ -81,7 +94,7 @@ public class ConnectionThread extends Thread {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("A client has disconnected");
         }
     }
 

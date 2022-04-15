@@ -132,7 +132,16 @@ public class UI extends Thread {
 		JButton remove = new JButton("REMOVE");
 		remove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				display.setText("remove success");
+				JSONObject msg = new JSONObject();
+				msg.put("action", "Remove");
+				msg.put("word", word.getText());
+
+				JSONObject reply = client.send(msg);
+				if (reply.get("error") != null) {
+					display.setText((String) reply.get("error"));
+				} else {
+					display.setText((String) reply.get("msg"));
+				}
 			}
 		});
 		remove.setBounds(228, 45, 93, 23);
@@ -141,7 +150,18 @@ public class UI extends Thread {
 		JButton update = new JButton("UPDATE");
 		update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				display.setText("update success");
+
+				JSONObject msg = new JSONObject();
+				msg.put("action", "Update");
+				msg.put("word", word.getText());
+				msg.put("meaning", meaning.getText());
+
+				JSONObject reply = client.send(msg);
+				if (reply.get("error") != null) {
+					display.setText((String) reply.get("error"));
+				} else {
+					display.setText((String) reply.get("msg"));
+				}
 			}
 		});
 		update.setBounds(331, 45, 93, 23);

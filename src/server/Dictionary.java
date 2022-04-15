@@ -7,14 +7,9 @@ public class Dictionary {
     private String path;
     private HashMap<String, String> dict = new HashMap<String, String>();
 
-    public Dictionary() {
-        dict.put("apple", "aaa");
-    }
-
     public Dictionary(String path) {
         this.path = path;
         dict = loadFile(path);
-
     }
 
     public synchronized String query(String word) {
@@ -31,12 +26,21 @@ public class Dictionary {
     }
 
     public synchronized boolean remove(String word) {
-
+        if (dict.containsKey(word)) {
+            dict.remove(word);
+            writeFile(this.path);
+            return true;
+        }
         return false;
     }
 
     public synchronized boolean update(String word, String meaning) {
-
+        if (dict.containsKey(word)) {
+            dict.remove(word);
+            dict.put(word, meaning);
+            writeFile(this.path);
+            return true;
+        }
         return false;
     }
 
@@ -64,8 +68,9 @@ public class Dictionary {
                     dict.put(name, number);
             }
         }
-        catch (Exception e) {
-            System.out.println("EXCEPTION!");
+        catch (IOException e) {
+            System.out.println("No such file! Create one");
+            writeFile(path);
         }
         finally {
             if (br != null) {
@@ -96,10 +101,9 @@ public class Dictionary {
             bf.flush();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error");
         }
         finally {
-
             try {
 
                 bf.close();
