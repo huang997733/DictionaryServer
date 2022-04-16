@@ -9,7 +9,22 @@ public class Dictionary {
 
     public Dictionary(String path) {
         this.path = path;
-        dict = loadFile(path);
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+            dict = (HashMap<String, String>) ois.readObject();
+            ois.close();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Wrong dictionary format! Running default");
+            runDefault();
+        } catch (FileNotFoundException e) {
+            System.out.println("No such file! Running default");
+            runDefault();
+        } catch (Exception e) {
+            System.out.println("Unknown error");
+            System.exit(-1);
+        }
+
+//        dict = loadFile(path);
     }
 
     public synchronized String query(String word) {
@@ -85,31 +100,39 @@ public class Dictionary {
     }
 
     public void writeFile(String path) {
-
-        BufferedWriter bf = null;
         try {
-
-            bf = new BufferedWriter(new FileWriter(path));
-
-            for (HashMap.Entry<String, String> entry : dict.entrySet()) {
-
-                bf.write(entry.getKey() + ":" + entry.getValue());
-
-                bf.newLine();
-            }
-
-            bf.flush();
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
+            oos.writeObject(dict);
+            oos.close();
+        } catch (Exception e) {
+            System.out.println("Unknown error occurred when writing file");
         }
-        catch (IOException e) {
-            System.out.println("Error");
-        }
-        finally {
-            try {
 
-                bf.close();
-            }
-            catch (Exception e) {
-            }
+    }
+
+    private void runDefault() {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+            dict = (HashMap<String, String>) ois.readObject();
+            ois.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("No default dictionary, create one");
+            createDict();
+        } catch (Exception e) {
+            System.out.println("Unknown error");
+            System.exit(-1);
+        }
+    }
+
+    private void createDict() {
+        dict = new HashMap<String, String>();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
+            oos.writeObject(dict);
+            oos.close();
+        } catch (Exception e) {
+            System.out.println("Unknown error");
+            System.exit(-1);
         }
     }
 

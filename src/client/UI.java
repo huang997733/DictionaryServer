@@ -4,12 +4,9 @@ import org.json.simple.JSONObject;
 
 import java.awt.*;
 
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.JButton;
+import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -18,7 +15,8 @@ public class UI extends Thread {
 	private JFrame frmDictionary;
 	private JTextField title;
 	private JTextField word;
-	private JTextField meaning;
+	private JTextArea meaning;
+	private JTextArea display;
 	private Client client;
 
 	public void run() {
@@ -64,18 +62,21 @@ public class UI extends Thread {
 		title.setColumns(10);
 		
 		word = new JTextField();
-		word.setBounds(10, 80, 120, 36);
+		word.setBounds(10, 80, 196, 36);
 		frmDictionary.getContentPane().add(word);
 		word.setColumns(10);
-		
-		meaning = new JTextField();
-		meaning.setBounds(10, 126, 120, 85);
-		frmDictionary.getContentPane().add(meaning);
-		meaning.setColumns(10);
 
-		JTextArea display = new JTextArea();
+
+
+		meaning = new JTextArea();
+		meaning.setLineWrap(true);
+		meaning.setBounds(10, 126, 196, 125);
+		frmDictionary.getContentPane().add(meaning);
+
+		display = new JTextArea();
 		display.setEditable(false);
-		display.setBounds(153, 80, 271, 131);
+		display.setLineWrap(true);
+		display.setBounds(228, 80, 196, 171);
 		frmDictionary.getContentPane().add(display);
 
 
@@ -88,7 +89,7 @@ public class UI extends Thread {
 
 				JSONObject msg = new JSONObject();
 				msg.put("action", "Query");
-				msg.put("word", word.getText());
+				msg.put("word", word.getText().toLowerCase());
 
 				JSONObject reply = client.send(msg);
 				if (reply.get("error") != null) {
@@ -113,7 +114,7 @@ public class UI extends Thread {
 
 				JSONObject msg = new JSONObject();
 				msg.put("action", "Add");
-				msg.put("word", word.getText());
+				msg.put("word", word.getText().toLowerCase());
 				msg.put("meaning", meaning.getText());
 
 				JSONObject reply = client.send(msg);
@@ -121,6 +122,7 @@ public class UI extends Thread {
 					display.setText((String) reply.get("error"));
 				} else {
 					display.setText((String) reply.get("msg"));
+					meaning.setText("");
 				}
 			}
 		});
@@ -134,7 +136,7 @@ public class UI extends Thread {
 			public void actionPerformed(ActionEvent e) {
 				JSONObject msg = new JSONObject();
 				msg.put("action", "Remove");
-				msg.put("word", word.getText());
+				msg.put("word", word.getText().toLowerCase());
 
 				JSONObject reply = client.send(msg);
 				if (reply.get("error") != null) {
@@ -153,7 +155,7 @@ public class UI extends Thread {
 
 				JSONObject msg = new JSONObject();
 				msg.put("action", "Update");
-				msg.put("word", word.getText());
+				msg.put("word", word.getText().toLowerCase());
 				msg.put("meaning", meaning.getText());
 
 				JSONObject reply = client.send(msg);
@@ -161,10 +163,11 @@ public class UI extends Thread {
 					display.setText((String) reply.get("error"));
 				} else {
 					display.setText((String) reply.get("msg"));
+					meaning.setText("");
 				}
 			}
 		});
-		update.setBounds(331, 45, 93, 23);
+		update.setBounds(331, 47, 93, 23);
 		frmDictionary.getContentPane().add(update);
 		
 

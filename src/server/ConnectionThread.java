@@ -53,39 +53,49 @@ public class ConnectionThread extends Thread {
                     case "Add" :
                         word = (String) request.get("word");
                         meaning =  (String) request.get("meaning");
-                        if (word.equals("") && meaning.equals("")) {
-                            reply.put("error", "Please enter a word and its definition");
-                        } else if (!word.equals("") && meaning.equals("")) {
+                        if (word.equals("")) {
+                            reply.put("error", "Please enter a word");
+                        } else if (meaning.equals("")) {
                             reply.put("error", "Please enter the meaning");
                         } else {
                             boolean addSuccess = dictionary.add(word, meaning);
                             if (addSuccess) {
                                 reply.put("msg", "Add success");
                             } else {
-                                reply.put("error", "Add fail");
+                                reply.put("error", "Add fail: word already exists");
                             }
                         }
 
                         break;
                     case "Remove" :
                         word = (String) request.get("word");
-                        boolean removeSuccess = dictionary.remove(word);
-                        if (removeSuccess) {
-                            reply.put("msg", "Remove success");
+                        if (word.equals("")) {
+                            reply.put("error", "Please enter a word");
                         } else {
-                            reply.put("error", "Remove fail: word not found");
+                            boolean removeSuccess = dictionary.remove(word);
+                            if (removeSuccess) {
+                                reply.put("msg", "Remove success");
+                            } else {
+                                reply.put("error", "Remove fail: word not found");
+                            }
                         }
-
                         break;
                     case "Update" :
                         word = (String) request.get("word");
                         meaning =  (String) request.get("meaning");
-                        boolean updateSuccess = dictionary.update(word, meaning);
-                        if (updateSuccess) {
-                            reply.put("msg", "Update success");
+                        if (word.equals("")) {
+                            reply.put("error", "Please enter a word");
+                        } else if (meaning.equals("")) {
+                            reply.put("error", "Please enter the meaning");
                         } else {
-                            reply.put("error", "Update fail: word does not exist");
+                            boolean updateSuccess = dictionary.update(word, meaning);
+                            if (updateSuccess) {
+                                reply.put("msg", "Update success");
+                            } else {
+                                reply.put("error", "Update fail: word does not exist");
+                            }
                         }
+
                         break;
 
                 }

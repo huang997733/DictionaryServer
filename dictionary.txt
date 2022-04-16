@@ -1,2 +1,1 @@
 baaaa:baaaa
-apple:a fruit
