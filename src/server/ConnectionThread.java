@@ -1,15 +1,12 @@
+/**
+ * author: Ziyang Huang 1067800
+ */
 package server;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class ConnectionThread extends Thread {
 

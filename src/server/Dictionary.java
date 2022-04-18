@@ -1,3 +1,6 @@
+/**
+ * author: Ziyang Huang 1067800
+ */
 package server;
 
 import java.io.*;
@@ -24,7 +27,6 @@ public class Dictionary {
             System.exit(-1);
         }
 
-//        dict = loadFile(path);
     }
 
     public synchronized String query(String word) {
@@ -57,46 +59,6 @@ public class Dictionary {
             return true;
         }
         return false;
-    }
-
-    public HashMap<String, String> loadFile(String path) {
-
-        HashMap<String, String> dict = new HashMap<String, String>();
-        BufferedReader br = null;
-        try {
-            File file = new File(path);
-
-            br = new BufferedReader(new FileReader(file));
-
-            String line = null;
-
-            while ((line = br.readLine()) != null) {
-
-
-                String[] parts = line.split(":");
-
-
-                String name = parts[0].trim();
-                String number = parts[1].trim();
-
-                if (!name.equals("") && !number.equals(""))
-                    dict.put(name, number);
-            }
-        }
-        catch (IOException e) {
-            System.out.println("No such file! Create one");
-            writeFile(path);
-        }
-        finally {
-            if (br != null) {
-                try {
-                    br.close();
-                }
-                catch (Exception e) {
-                };
-            }
-        }
-        return dict;
     }
 
     public void writeFile(String path) {
