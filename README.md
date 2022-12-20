@@ -1,5 +1,5 @@
 # DictionaryServer
-This project is to implement a multi-threaded Dictionary Server using a client-server architecture. The system allows multiple clients to connect concurrently. Clients can do four types of operations which are querying a word from dictionary, adding a word and its meanings to the dictionary, removing a word from the dictionary and update an existing word in the dictionary.
+Multi-threaded Dictionary Server
 
 ## How to run
 Run server
@@ -13,6 +13,12 @@ Run client
 ```sh
 $ java -jar DictionaryClient.jar <server-ip> <port>
 ```
+
+## Functionality
+1. Query a word from dictionary
+2. Add a word and its meaning to the dictionary
+3. Remove a word from the dictionary
+4. Update the meaning of a word in the dictionary
 
 ## Interface
 The interface is shown below. Should be very straightforward to use.  :)
